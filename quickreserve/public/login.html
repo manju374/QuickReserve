@@ -60,11 +60,9 @@
   <p>&copy; 2025 QuickReserve. All rights reserved.</p>
 </footer>
 
-<!-- Toast Notification -->
 <div id="toast" class="toast"></div>
 
 <script>
-  // Show/hide nav links based on login state
   fetch("/auth/status")
     .then(res => res.json())
     .then(data => {
@@ -80,7 +78,6 @@
       }
     });
 
-  // Toast alert
   function showToast(message, color = "#f44336") {
     const toast = document.getElementById("toast");
     toast.textContent = message;
@@ -89,7 +86,6 @@
     setTimeout(() => toast.classList.remove("show"), 3000);
   }
 
-  // AJAX login handler
   document.getElementById("login-form").addEventListener("submit", async function(e) {
     e.preventDefault();
 
