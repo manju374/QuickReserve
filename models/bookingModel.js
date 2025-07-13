@@ -1,4 +1,4 @@
-// models/Booking.js
+
 const db = require("../db");
 
 exports.createBooking = (userId, trainId) => {
