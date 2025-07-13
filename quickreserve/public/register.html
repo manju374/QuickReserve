@@ -62,11 +62,9 @@
   <p>&copy; 2025 QuickReserve. All rights reserved.</p>
 </footer>
 
-<!-- Toast Message -->
 <div id="toast" class="toast"></div>
 
 <script>
-  // Toggle nav items based on session
   fetch("/auth/status")
     .then(res => res.json())
     .then(data => {
@@ -82,7 +80,6 @@
       }
     });
 
-  // Toast popup function
   function showToast(message, color = "#f44336") {
     const toast = document.getElementById("toast");
     toast.textContent = message;
@@ -91,7 +88,6 @@
     setTimeout(() => toast.classList.remove("show"), 3000);
   }
 
-  // Handle form submission via fetch
   document.getElementById("register-form").addEventListener("submit", async function(e) {
     e.preventDefault();
 
