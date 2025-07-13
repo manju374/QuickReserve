@@ -63,7 +63,6 @@ router.post("/delete-train/:id", async (req, res) => {
   }
 });
 
-// 👥 Get all users
 router.get("/users", async (req, res) => {
   try {
     const result = await db.query("SELECT id, name, email FROM users ORDER BY id");
@@ -74,8 +73,6 @@ router.get("/users", async (req, res) => {
   }
 });
 
-
-// 🗑 Delete a user (admin only)
 router.post("/delete-user/:id", async (req, res) => {
   try {
     await db.query("DELETE FROM users WHERE id = $1", [req.params.id]);
