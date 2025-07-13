@@ -1,4 +1,4 @@
-// controllers/userController.js
+
 const Train = require("../models/trainModel");
 const Booking = require("../models/bookingModel");
 
