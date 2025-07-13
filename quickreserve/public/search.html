@@ -70,7 +70,6 @@
 <div id="toast" class="toast"></div>
 
 <script>
-  // 🔄 Toggle navbar based on login
   fetch("/auth/status")
     .then(res => res.json())
     .then(data => {
@@ -80,7 +79,6 @@
       hideIfLoggedIn.forEach(id => document.getElementById(id).style.display = data.loggedIn ? "none" : "inline-block");
     });
 
-  // 🔔 Toast message display
   function showToast(message, color = "#f44336") {
     const toast = document.getElementById("toast");
     toast.textContent = message;
@@ -89,7 +87,6 @@
     setTimeout(() => toast.classList.remove("show"), 3000);
   }
 
-  // 🔍 Train search handler
   document.getElementById("search-form").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -132,7 +129,6 @@
       resultsDiv.appendChild(card);
     });
 
-    // 🎟 Attach book handlers
     document.querySelectorAll(".book-form").forEach(form => {
       form.addEventListener("submit", async function (e) {
         e.preventDefault();
