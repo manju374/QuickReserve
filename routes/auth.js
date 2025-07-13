@@ -4,7 +4,6 @@ const db = require("../db");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
-// 📧 Email validation regex
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -16,25 +15,20 @@ const transporter = nodemailer.createTransport({
 
 const validateEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-
-// 🔐 Register
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
-  // 1️⃣ Email Format Validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return res.status(400).json({ success: false, message: "Invalid email format" });
   }
 
   try {
-    // 2️⃣ Check if email already exists
     const check = await db.query("SELECT * FROM users WHERE email = $1", [email]);
     if (check.rows.length > 0) {
       return res.status(409).json({ success: false, message: "⚠️ Email already registered" });
     }
 
-    // 3️⃣ Create user
     const hashedPassword = await bcrypt.hash(password, 10);
     const userResult = await db.query(
       "INSERT INTO users (name, email, password, is_verified) VALUES ($1, $2, $3, $4) RETURNING id",
@@ -42,11 +36,9 @@ router.post("/register", async (req, res) => {
     );
     const userId = userResult.rows[0].id;
 
-    // 4️⃣ Generate verification token
     const token = crypto.randomBytes(32).toString("hex");
     await db.query("INSERT INTO email_tokens (user_id, token) VALUES ($1, $2)", [userId, token]);
 
-    // 5️⃣ Send verification email
     const verifyLink = `https://quickreserve-dm48.onrender.com/auth/verify?token=${token}`;
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -73,8 +65,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// 🔓 Login
-// 🔓 SECURE LOGIN
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   console.log("Login attempt for email:", email);
@@ -94,7 +84,6 @@ router.post("/login", async (req, res) => {
       return res.status(403).json({ success: false, message: "⚠️ Please verify your email first" });
     }
 
-    // ✅ Compare hashed password
     const match = await bcrypt.compare(password, user.password);
     console.log("Password match result:", match);
 
@@ -136,14 +125,10 @@ router.get("/verify", async (req, res) => {
   }
 });
 
-
-
-// 🔍 Check if logged in (used by frontend)
 router.get("/status", (req, res) => {
   res.json({ loggedIn: !!req.session.userId });
 });
 
-// 🚪 Logout
 router.get("/logout", (req, res) => {
   req.session.destroy(() => {
     res.redirect("/login.html");
