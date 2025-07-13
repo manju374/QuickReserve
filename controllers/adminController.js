@@ -1,4 +1,4 @@
-// controllers/adminController.js
+
 const Train = require("../models/trainModel");
 
 exports.addTrain = async (req, res) => {
