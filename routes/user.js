@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require("../db");
 const nodemailer = require("nodemailer");
 
-// Email transporter
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -12,7 +11,6 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// 🔍 Search Trains
 router.get("/search", async (req, res) => {
   const { source, destination, date } = req.query;
 
@@ -32,7 +30,6 @@ router.get("/search", async (req, res) => {
   }
 });
 
-// 🎟 Book a Train
 router.post("/book", async (req, res) => {
   const { userId } = req.session;
   const { train_id, seat_class, quantity } = req.body;
@@ -54,8 +51,6 @@ router.post("/book", async (req, res) => {
       "INSERT INTO bookings (user_id, train_id, seat_class, quantity) VALUES ($1, $2, $3, $4)",
       [userId, train_id, seat_class, quantity]
     );
-
-    // ✅ Send booking confirmation email
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: user.email,
@@ -79,7 +74,6 @@ router.post("/book", async (req, res) => {
   }
 });
 
-// 📦 View My Bookings
 router.get("/mybookings", async (req, res) => {
   const { userId } = req.session;
 
@@ -103,7 +97,6 @@ router.get("/mybookings", async (req, res) => {
   }
 });
 
-// ❌ Cancel Booking
 router.post("/cancel/:bookingId", async (req, res) => {
   const { userId } = req.session;
   const bookingId = req.params.bookingId;
