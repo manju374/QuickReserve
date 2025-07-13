@@ -1,4 +1,3 @@
-// models/Train.js
 const db = require("../db");
 
 exports.addTrain = (name, source, destination, date, departure_time, arrival_time) => {
